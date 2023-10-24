@@ -5,14 +5,9 @@ using System.Linq.Expressions;
 
 namespace ProjectReview.Interfaces
 {
-    public abstract class RepositoryBase<T> : IRepository<T> where T : class
+    public class RepositoryBase<T> : IRepository<T> where T : class
     {
         private readonly PROJECTREVIEWContext dataContext;
-
-        protected PROJECTREVIEWContext DbContext
-        {
-            get { return dataContext; }
-        }
 
         protected RepositoryBase(PROJECTREVIEWContext dbContext)
         {
