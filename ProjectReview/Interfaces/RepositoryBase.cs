@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProjectReview.Models;
 using System.Linq.Expressions;
 
@@ -69,6 +70,13 @@ namespace ProjectReview.Interfaces
             return dataContext.Set<T>().Count(where);
         }
 
+        /*[HttpGet] ví dụ khi sử dụng hàm này (cách chuyền bảng cần nối)
+        public IActionResult GetProducts()
+        {
+            var includes = new string[] { "Category" }; // Bạn có thể include nhiều thuộc tính nếu cần
+            var products = _productRepository.GetAll(includes);
+            return Ok(products);
+        }*/
         public IEnumerable<T> GetAll(string[] includes = null)
         {
             // Xử lý includes nếu cần thiết
@@ -81,6 +89,20 @@ namespace ProjectReview.Interfaces
             return query.ToList();
         }
 
+        /*[HttpGet("{id}")]  cx là ví dụ khi sử dụng hàm này
+        public IActionResult GetProductById(int id)
+        {
+            var includes = new string[] { "Category" };
+            Expression<Func<Product, bool>> expression = p => p.ProductId == id; //đây là điều kiện nhoa
+            var product = _productRepository.GetSingleByCondition(expression, includes);
+
+            if (product == null)
+            {
+                return NotFound(); // Trả về 404 Not Found nếu không tìm thấy sản phẩm
+            }
+
+            return Ok(product);
+        }*/
         public T GetSingleByCondition(Expression<Func<T, bool>> expression, string[] includes = null)
         {
             IQueryable<T> query = dataContext.Set<T>();
